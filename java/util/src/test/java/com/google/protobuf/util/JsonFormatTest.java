@@ -1895,4 +1895,13 @@ public class JsonFormatTest {
     assertThat(JsonFormat.printer().print(message))
         .isEqualTo("{\n  \"optionalFloat\": -0.0,\n  \"optionalDouble\": -0.0\n}");
   }
+
+  @Test
+  public void testDisablingHtmlEscaping() throws Exception {
+    TestAllTypes message = TestAllTypes.newBuilder().setOptionalString("foo=bar\\u003dbaz").build();
+    assertThat(JsonFormat.printer().print(message))
+        .isEqualTo("{\n  \"optionalString\": \"foo\\u003dbar\\\\u003dbaz\"\n}");
+    assertThat(JsonFormat.printer().disablingHtmlEscaping().print(message))
+        .isEqualTo("{\n  \"optionalString\": \"foo=bar\\\\u003dbaz\"\n}");
+  }
 }
